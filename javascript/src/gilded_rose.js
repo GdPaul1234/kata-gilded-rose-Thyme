@@ -1,8 +1,8 @@
 class Item {
   constructor(name, sellIn, quality) {
     this.name = name;
-    this.sellIn = sellIn;
-    this._quality = quality;
+    this.sellIn = sellIn; // number of days we have to sell the item
+    this._quality = quality; // how valuable the item
   }
 
   get quality() {
@@ -10,6 +10,8 @@ class Item {
   }
 
   set quality(value) {
+    // The Quality of an item is never negative
+    // The Quality of an item is never more than 50
     this._quality = Math.min(Math.max(0, value), 50);
   }
 }
@@ -37,15 +39,19 @@ class Shop {
   }
 
   #updateQualityOfBackStagePass(element) {
-    // Quality drops to 0 after the concert
     if (element.sellIn <= 0) {
+      // Quality drops to 0 after the concert
       element.quality = 0;
-      return;
+    } else if (element.sellIn < 6) {
+      // Quality increases by 2 when there are 10 days or less
+      element.quality += 3;
+    } else if (element.sellIn < 11) {
+      // Quality increases by 3 when there are 5 days or less
+      element.quality+= 2;
+    } else {
+      // Else Quality increase by 1
+      element.quality++;
     }
-
-    element.quality++;
-    if (element.sellIn < 11) element.quality++;
-    if (element.sellIn < 6) element.quality++;
   }
 
   updateQuality() {
