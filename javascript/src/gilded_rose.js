@@ -10,7 +10,7 @@ class Item {
   }
 
   set quality(value) {
-    this._quality = Math.max(0, value);
+    this._quality = Math.min(Math.max(0, value), 50);
   }
 }
 
@@ -23,7 +23,7 @@ class Shop {
     if (element.sellIn < 0) {
       switch (element.name) {
         case 'Aged Brie':
-          if (element.quality < 50) element.quality++;
+          element.quality++;
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
           element.quality = 0;
@@ -39,13 +39,11 @@ class Shop {
   }
 
   #updateQualityWhenLessThan50(element) {
-    if (element.quality < 50) {
-      element.quality++;
+    element.quality++;
 
-      if (element.name == 'Backstage passes to a TAFKAL80ETC concert' && element.quality < 50) {
-        if (element.sellIn < 11) element.quality++;
-        if (element.sellIn < 6) element.quality++;
-      }
+    if (element.name == 'Backstage passes to a TAFKAL80ETC concert' && element.quality < 50) {
+      if (element.sellIn < 11) element.quality++;
+      if (element.sellIn < 6) element.quality++;
     }
   }
 
