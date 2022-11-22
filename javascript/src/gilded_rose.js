@@ -2,7 +2,15 @@ class Item {
   constructor(name, sellIn, quality) {
     this.name = name;
     this.sellIn = sellIn;
-    this.quality = quality;
+    this._quality = quality;
+  }
+
+  get quality() {
+    return this._quality;
+  }
+
+  set quality(value) {
+    this._quality = Math.max(0, value);
   }
 }
 
@@ -24,7 +32,7 @@ class Shop {
           // noop
           break;
         default:
-          if (element.quality > 0) element.quality--;
+          element.quality--;
           break;
       }
     }
@@ -49,7 +57,7 @@ class Shop {
           this.#updateQualityWhenLessThan50(element);
           break;
         default:
-          if (element.quality > 0 && element.name != 'Sulfuras, Hand of Ragnaros') element.quality--;
+          if (element.name != 'Sulfuras, Hand of Ragnaros') element.quality--;
           break;
       }
 
