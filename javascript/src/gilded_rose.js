@@ -15,8 +15,7 @@ class Shop {
     if (element.sellIn < 0) {
       switch (element.name) {
         case 'Aged Brie':
-          if (element.quality < 50)
-            element.quality++;
+          if (element.quality < 50) element.quality++;
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
           element.quality = 0;
@@ -25,36 +24,36 @@ class Shop {
           // noop
           break;
         default:
-          if (element.quality > 0)
-            element.quality--;
+          if (element.quality > 0) element.quality--;
           break;
+      }
+    }
+  }
+
+  #updateQualityWhenLessThan50(element) {
+    if (element.quality < 50) {
+      element.quality++;
+
+      if (element.name == 'Backstage passes to a TAFKAL80ETC concert' && element.quality < 50) {
+        if (element.sellIn < 11) element.quality++;
+        if (element.sellIn < 6) element.quality++;
       }
     }
   }
 
   updateQuality() {
     for (const element of this.items) {
-      if (element.name != 'Aged Brie' && element.name != 'Backstage passes to a TAFKAL80ETC concert') {
-        if (element.quality > 0 && element.name != 'Sulfuras, Hand of Ragnaros') {
-          element.quality = element.quality - 1;
-        }
-      } else {
-        if (element.quality < 50) {
-          element.quality = element.quality + 1;
-          if (element.name == 'Backstage passes to a TAFKAL80ETC concert') {
-            if (element.quality < 50) {
-              if (element.sellIn < 6) {
-                element.quality = element.quality + 2;
-              } else if (element.sellIn < 11) {
-                element.quality = element.quality++;
-              }
-            }
-          }
-        }
+      switch (element.name) {
+        case 'Aged Brie':
+        case 'Backstage passes to a TAFKAL80ETC concert':
+          this.#updateQualityWhenLessThan50(element);
+          break;
+        default:
+          if (element.quality > 0 && element.name != 'Sulfuras, Hand of Ragnaros') element.quality--;
+          break;
       }
-      if (element.name != 'Sulfuras, Hand of Ragnaros') {
-        element.sellIn = element.sellIn - 1;
-      }
+
+      if (element.name != 'Sulfuras, Hand of Ragnaros') element.sellIn--;
       this.#updateQualityWhenNegativeSellIn(element);
     }
 
