@@ -26,8 +26,6 @@ class Shop {
           element.quality++;
           break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          element.quality = 0;
-          break;
         case 'Sulfuras, Hand of Ragnaros':
           // noop
           break;
@@ -38,24 +36,32 @@ class Shop {
     }
   }
 
-  #updateQualityWhenLessThan50(element) {
-    element.quality++;
-
-    if (element.name == 'Backstage passes to a TAFKAL80ETC concert' && element.quality < 50) {
-      if (element.sellIn < 11) element.quality++;
-      if (element.sellIn < 6) element.quality++;
+  #updateQualityOfBackStagePass(element) {
+    // Quality drops to 0 after the concert
+    if (element.sellIn <= 0) {
+      element.quality = 0;
+      return;
     }
+
+    element.quality++;
+    if (element.sellIn < 11) element.quality++;
+    if (element.sellIn < 6) element.quality++;
   }
 
   updateQuality() {
     for (const element of this.items) {
       switch (element.name) {
         case 'Aged Brie':
+          element.quality++;
+          break;
         case 'Backstage passes to a TAFKAL80ETC concert':
-          this.#updateQualityWhenLessThan50(element);
+          this.#updateQualityOfBackStagePass(element);
+          break;
+        case 'Sulfuras, Hand of Ragnaros':
+          // noop
           break;
         default:
-          if (element.name != 'Sulfuras, Hand of Ragnaros') element.quality--;
+          element.quality--;
           break;
       }
 
