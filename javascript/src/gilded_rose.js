@@ -43,11 +43,10 @@ class Shop {
           element.quality = element.quality + 1;
           if (element.name == 'Backstage passes to a TAFKAL80ETC concert') {
             if (element.quality < 50) {
-              if (element.sellIn < 11) {
-                element.quality = element.quality + 1;
-              }
               if (element.sellIn < 6) {
-                element.quality = element.quality + 1;
+                element.quality = element.quality + 2;
+              } else if (element.sellIn < 11) {
+                element.quality = element.quality++;
               }
             }
           }
