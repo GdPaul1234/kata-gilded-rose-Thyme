@@ -35,24 +35,31 @@ class Shop {
       if (element.name != 'Sulfuras, Hand of Ragnaros') {
         element.sellIn = element.sellIn - 1;
       }
-      if (element.sellIn < 0) {
-        if (element.name == 'Aged Brie') {
-          if (element.quality < 50) {
-            element.quality = element.quality + 1;
-          }
-        } else {
-          if (element.name != 'Backstage passes to a TAFKAL80ETC concert') {
-            if (element.quality > 0 && element.name != 'Sulfuras, Hand of Ragnaros') {
-              element.quality = element.quality - 1;
-            }
-          } else {
-            element.quality = 0;
-          }
-        } 
-      }
+      updateQualityWhenNegativeSellIn(element);
     }
 
     return this.items;
+
+    function updateQualityWhenNegativeSellIn(element) {
+      if (element.sellIn < 0) {
+        switch (element.name) {
+          case 'Aged Brie':
+            if (element.quality < 50)
+              element.quality++;
+            break;
+          case 'Backstage passes to a TAFKAL80ETC concert':
+            element.quality = 0;
+            break;
+          case 'Sulfuras, Hand of Ragnaros':
+            // noop
+            break;
+          default:
+            if (element.quality > 0)
+              element.quality--;
+            break;
+        }
+      }
+    }
   }
 }
 module.exports = {
